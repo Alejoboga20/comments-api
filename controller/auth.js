@@ -23,10 +23,26 @@ const createUser = async (req, res = response) => {
   }
 };
 
-const loginUser = (req, res) => {
+const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
-  res.status(200).json({ ok: true, msg: 'login', email, password });
+  try {
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ ok: false, msg: 'User Email incorrect' });
+    } else {
+      const validPassword = bcrypt.compareSync(password, user.password);
+
+      if (!validPassword) {
+        return res.status(404).json({ ok: false, msg: 'Password incorrect' });
+      }
+
+      return res.status(200).json({ ok: true, uid: user.id, name: user.name });
+    }
+  } catch (error) {
+    res.status(500).json({ ok: false, msg: 'User credentials invalid' });
+  }
 };
 
 module.exports = { createUser, loginUser };
