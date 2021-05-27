@@ -11,5 +11,5 @@
 
 ### DB Credentials
 
-User: comments_api
-Pass: wwDFtxmQFxZni7C7
+User: dev
+Pass: dtQKMoM92HaQ1wQr
