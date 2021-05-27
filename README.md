@@ -7,3 +7,4 @@
 - [ExpressJS](https://expressjs.com/)
 - [NODEMON](https://github.com/remy/nodemon)
 - [Dotenv](https://github.com/motdotla/dotenv)
+- [ExpressValidator](https://express-validator.github.io/docs/)
