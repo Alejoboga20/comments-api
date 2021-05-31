@@ -1,9 +1,31 @@
-const getComments = async () => {};
+const { response } = require('express');
 
-const createComment = async () => {};
+const getComments = async (req, res = response) => {
+  res.json({
+    ok: true,
+    msg: 'getComments'
+  });
+};
 
-const updateComment = async () => {};
+const createComment = async (req, res = response) => {
+  res.json({
+    ok: true,
+    msg: 'createComment'
+  });
+};
 
-const deleteComment = async () => {};
+const updateComment = async (req, res = response) => {
+  res.json({
+    ok: true,
+    msg: 'updateComment'
+  });
+};
+
+const deleteComment = async (req, res = response) => {
+  res.json({
+    ok: true,
+    msg: 'deleteComment'
+  });
+};
 
 module.exports = { getComments, createComment, updateComment, deleteComment };
