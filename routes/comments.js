@@ -7,8 +7,11 @@ const {
   deleteComment
 } = require('../controller/comments');
 const { validateFields } = require('../middlewares/fieldsValidator');
+const { validateJwt } = require('../middlewares/validateJwt');
 
 const router = Router();
+
+router.use(validateJwt);
 
 router.get('/', getComments);
 
