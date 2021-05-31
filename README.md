@@ -1,6 +1,6 @@
 # Comments API
 
-- Set a PORT in a .env file in order to run development server
+To run this app add .env file with required env variables
 
 ## NPM Packages used:
 
@@ -12,4 +12,5 @@
 ### DB Credentials
 
 User: dev
+
 Pass: dtQKMoM92HaQ1wQr
