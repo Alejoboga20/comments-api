@@ -1,9 +1,10 @@
 const { response } = require('express');
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
+const { generateJWT } = require('../helpers/jwt');
 
 const createUser = async (req, res = response) => {
-  const { name, email, password } = req.body;
+  const { email, password } = req.body;
 
   try {
     let user = await User.findOne({ email });
@@ -13,10 +14,14 @@ const createUser = async (req, res = response) => {
     } else {
       user = new User(req.body);
 
+      const token = await generateJWT(user.id, user.name);
+
       const salt = bcrypt.genSaltSync();
       user.password = bcrypt.hashSync(password, salt);
       await user.save();
-      return res.status(201).json({ ok: true, uid: user.id, name: user.name });
+      return res
+        .status(201)
+        .json({ ok: true, uid: user.id, name: user.name, token });
     }
   } catch (e) {
     res.status(500).json({ ok: false, msg: 'User credentials invalid' });
@@ -38,7 +43,11 @@ const loginUser = async (req, res) => {
         return res.status(404).json({ ok: false, msg: 'Password incorrect' });
       }
 
-      return res.status(200).json({ ok: true, uid: user.id, name: user.name });
+      const token = await generateJWT(user.id, user.name);
+
+      return res
+        .status(200)
+        .json({ ok: true, uid: user.id, name: user.name, token });
     }
   } catch (error) {
     res.status(500).json({ ok: false, msg: 'User credentials invalid' });
