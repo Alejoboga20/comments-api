@@ -15,7 +15,11 @@ router.use(validateJwt);
 
 router.get('/', getComments);
 
-router.post('/', createComment);
+router.post(
+  '/',
+  [check('body', 'Comment can not be empty').not().isEmpty(), validateFields],
+  createComment
+);
 
 router.put('/:id', updateComment);
 
