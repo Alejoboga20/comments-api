@@ -21,7 +21,11 @@ router.post(
   createComment
 );
 
-router.put('/:id', updateComment);
+router.put(
+  '/:id',
+  [check('body', 'Comment can not be empty').not().isEmpty(), validateFields],
+  updateComment
+);
 
 router.delete('/:id', deleteComment);
 
