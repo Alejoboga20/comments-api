@@ -1,4 +1,5 @@
 const { response } = require('express');
+const { findByIdAndDelete } = require('../models/Comment');
 const Comment = require('../models/Comment');
 
 const getComments = async (req, res = response) => {
@@ -52,7 +53,7 @@ const updateComment = async (req, res = response) => {
       { new: true }
     );
 
-    return res.json({ ok: true, comment: updatedComment });
+    return res.status(200).json({ ok: true, comment: updatedComment });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ ok: false, msg: 'An error has ocured' });
@@ -60,10 +61,28 @@ const updateComment = async (req, res = response) => {
 };
 
 const deleteComment = async (req, res = response) => {
-  res.json({
-    ok: true,
-    msg: 'deleteComment'
-  });
+  const commentId = req.params.id;
+  const uid = req.uid;
+
+  try {
+    const comment = await Comment.findById(commentId);
+
+    if (!comment) {
+      return res.status(404).json({ ok: false, msg: 'Comment not found' });
+    }
+
+    if (comment.user.toString() !== uid) {
+      return res
+        .status(401)
+        .json({ ok: false, msg: 'Not authorized for this change' });
+    }
+
+    const deletedComment = await Comment.findByIdAndDelete(commentId);
+    return res.status(200).json({ ok: true, comment: deletedComment });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ ok: false, msg: 'An error has ocured' });
+  }
 };
 
 module.exports = { getComments, createComment, updateComment, deleteComment };
