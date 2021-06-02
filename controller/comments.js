@@ -2,10 +2,14 @@ const { response } = require('express');
 const Comment = require('../models/Comment');
 
 const getComments = async (req, res = response) => {
-  res.json({
-    ok: true,
-    msg: 'getComments'
-  });
+  try {
+    const comments = await Comment.find().populate('user', 'name');
+
+    return res.json({ ok: true, comments: comments });
+  } catch (e) {
+    console.log(e);
+    return res.status(500).json({ ok: false, msg: 'An error has ocured' });
+  }
 };
 
 const createComment = async (req, res = response) => {
