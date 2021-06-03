@@ -33,4 +33,27 @@ describe('Comments Tests', () => {
     expect(response.body.ok).toBe(true);
     expect(response.body.comment).not.toBeNull();
   });
+
+  test('should get comments when login', async () => {
+    await new Comment(newCommentWithValidData);
+
+    const response = await request(app)
+      .get('/api/comments')
+      .set('x-token', token)
+      .expect(200);
+
+    expect(response.body.ok).toBe(true);
+    expect(response.body.comments).not.toBe(null);
+  });
+
+  test('should not get comments when not login', async () => {
+    await new Comment(newCommentWithValidData);
+
+    const response = await request(app)
+      .get('/api/comments')
+      .set('x-token', 'invalidtoken')
+      .expect(401);
+
+    expect(response.body).toEqual({ ok: false, msg: 'Invalid Token' });
+  });
 });
