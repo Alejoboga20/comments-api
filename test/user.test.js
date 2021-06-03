@@ -13,9 +13,11 @@ const {
 } = require('./fixtures/user.td');
 
 describe('Signup User Tests', () => {
-  beforeEach(async () => await User.deleteMany());
+  const { email } = newUserWithValidData;
 
-  afterEach(async () => await User.deleteMany());
+  beforeEach(async () => await User.findOneAndDelete({ email }));
+
+  afterEach(async () => await User.findOneAndDelete({ email }));
 
   test('should signup a new user with valid data', async () => {
     const response = await request(app)
@@ -49,12 +51,14 @@ describe('Signup User Tests', () => {
 });
 
 describe('Login User Tests', () => {
+  const { email } = newUserWithValidData;
+
   beforeEach(
     async () =>
       await request(app).post('/api/auth/new').send(newUserWithValidData)
   );
 
-  afterEach(async () => await User.deleteMany());
+  afterEach(async () => await User.findOneAndDelete({ email }));
 
   test('should login with valid credentials', async () => {
     const { email, password } = newUserWithValidData;
