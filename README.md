@@ -14,3 +14,7 @@ To run this app add .env file with required env variables
 User: dev
 
 Pass: dtQKMoM92HaQ1wQr
+
+User: test
+
+Pass: IeXYRDGyOAXvU5TV
