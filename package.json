@@ -6,10 +6,12 @@
   "author": "Alejo boga <alejoboga20@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "nodemon index.js",
+    "dev": "env-cmd -f ./dev.env nodemon index.js",
+    "test": "env-cmd -f ./test.env jest --watchAll",
     "start": "node index.js"
   },
   "devDependencies": {
+    "env-cmd": "^10.1.0",
     "nodemon": "^2.0.7"
   },
   "dependencies": {
