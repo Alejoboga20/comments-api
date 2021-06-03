@@ -1,6 +1,6 @@
 const newUserWithValidData = {
   name: 'testUser',
-  email: 'testUser@email.com',
+  email: 'testuser@email.com',
   password: 'TestUser123!',
   passwordConfirmation: 'TestUser123!'
 };

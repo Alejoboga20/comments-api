@@ -22,4 +22,13 @@ const invalidPasswordError = {
   }
 };
 
-module.exports = { invalidEmaiError, invalidPasswordError };
+const incorrectEmailError = {
+  ok: false,
+  msg: 'User Email incorrect'
+};
+
+module.exports = {
+  invalidEmaiError,
+  invalidPasswordError,
+  incorrectEmailError
+};

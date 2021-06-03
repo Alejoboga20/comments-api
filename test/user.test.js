@@ -3,7 +3,8 @@ const app = require('../app');
 const User = require('../models/User');
 const {
   invalidEmaiError,
-  invalidPasswordError
+  invalidPasswordError,
+  incorrectEmailError
 } = require('./fixtures/errors.td');
 const {
   newUserWithValidData,
@@ -47,4 +48,33 @@ describe('Signup User Tests', () => {
   });
 });
 
-describe('Login User Tests', () => {});
+describe('Login User Tests', () => {
+  beforeEach(
+    async () =>
+      await request(app).post('/api/auth/new').send(newUserWithValidData)
+  );
+
+  afterEach(async () => await User.deleteMany());
+
+  test('should login with valid credentials', async () => {
+    const { email, password } = newUserWithValidData;
+
+    const response = await request(app)
+      .post('/api/auth/')
+      .send({ email, password })
+      .expect(200);
+
+    expect(response.body.token).not.toBeNull();
+  });
+
+  test('should not login with invalid credentials', async () => {
+    const { email, password } = newUserWithInvalidPassword;
+
+    const response = await request(app)
+      .post('/api/auth/')
+      .send({ email, password })
+      .expect(404);
+
+    expect(response.body).toEqual(incorrectEmailError);
+  });
+});
